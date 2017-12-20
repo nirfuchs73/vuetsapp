@@ -73,7 +73,7 @@
                     </div>
                     <button @click.prevent="send" class="send">
                       <div class="circle">
-                        <i class="zmdi zmdi-mail-send">&gt;</i>
+                        <i class="zmdi zmdi-mail-send"></i>
                       </div>
                     </button>
                   </form>

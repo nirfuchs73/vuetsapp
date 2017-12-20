@@ -2,11 +2,11 @@ import moment from 'moment';
 
 import ioClient from 'socket.io-client'
 
+var socket = null;
 
 const connectSocket = () => {
-    const socket = ioClient('http://localhost:3000');
-    socket.on('msg received', function (strMsg) {
-        var msg = JSON.parse(strMsg);
+    socket = ioClient('http://localhost:3000');
+    socket.on('chat newMsg', function (msg) {
         // JIF
         if (nickName === msg.from) msgs[msgs.length - 1].processed = true;
         else msgs.push(msg);
@@ -17,7 +17,7 @@ const connectSocket = () => {
 
 const msgs = [];
 var nickName = lorem();
-// connectSocket();
+connectSocket();
 
 
 const getMsgs = () => {
@@ -25,11 +25,8 @@ const getMsgs = () => {
 }
 
 const send = (msg) => {
-
     msgs.push(msg);
-
-    socket.emit('msg new', JSON.stringify(msg));
-
+    socket.emit('chat msg', msg);
 }
 
 
