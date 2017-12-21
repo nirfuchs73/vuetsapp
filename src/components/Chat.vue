@@ -49,7 +49,7 @@
                 <div class="conversation">
                   <div class="conversation-container">
 
-                    <div v-for="msg in msgs" class="message" :class="msgClass(msg)">
+                    <div v-for="(msg, idx) in msgs" :key="idx" class="message" :class="msgClass(msg)">
                       {{msg.txt}}
                       <span class="metadata">
                         <span class="time">{{msg.at}}</span>
@@ -96,25 +96,20 @@ export default {
       msgs: [],
       nickName: null,
       newMsg: null
-
     }
   },
   created() {
     this.nickName = msgService.nickName;
-    this.newMsg = this.createEmptyMsg();
+    this.newMsg = msgService.createEmptyMsg();
     this.msgs = msgService.getMsgs();
   },
   methods: {
-    createEmptyMsg() {
-      return {txt: '', processed: false, from: this.nickName};
-    },
     msgClass(msg) {
       return (msg.from !== this.nickName) ? 'received' : 'sent';
     },
     send() {
-      console.log(this.newMsg);
       msgService.send(this.newMsg);
-      this.newMsg = this.createEmptyMsg();
+      this.newMsg = msgService.createEmptyMsg();
 
     }
   }

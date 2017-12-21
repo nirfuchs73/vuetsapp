@@ -3,9 +3,16 @@ import moment from 'moment';
 import ioClient from 'socket.io-client'
 
 var socket = null;
+const msgs = [];
+var nickName = lorem();
+connectSocket();
 
-const connectSocket = () => {
-    socket = ioClient('http://localhost:3000');
+function connectSocket() {
+    socket = ioClient('http://localhost:3003');
+    socket.on('chat history', function (historyMsgs) {
+        msgs.push(...historyMsgs)
+    });
+
     socket.on('chat newMsg', function (msg) {
         // JIF
         if (nickName === msg.from) msgs[msgs.length - 1].processed = true;
@@ -14,12 +21,6 @@ const connectSocket = () => {
 
 }
 
-
-const msgs = [];
-var nickName = lorem();
-connectSocket();
-
-
 const getMsgs = () => {
     return msgs;
 }
@@ -27,6 +28,17 @@ const getMsgs = () => {
 const send = (msg) => {
     msgs.push(msg);
     socket.emit('chat msg', msg);
+}
+
+function createEmptyMsg() {
+    return { txt: '', processed: false, from: this.nickName };
+}
+
+export default {
+    getMsgs,
+    send,
+    nickName,
+    createEmptyMsg
 }
 
 
@@ -39,13 +51,4 @@ function lorem(size = 5) {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;
-}
-
-
-
-
-export default {
-    getMsgs,
-    send,
-    nickName
 }

@@ -4,7 +4,7 @@ import bus from './bus.service'
 var todos = [];
 window.todos = todos;
 
-const todoUrl = 'http://localhost:3003/data/team1/todo'
+const todoUrl = 'http://localhost:3003/data/todo'
 const errMsg = errMsg;
 
 const emptyTodo = () => ({
