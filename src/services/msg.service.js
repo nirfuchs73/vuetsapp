@@ -10,8 +10,6 @@ connectSocket();
 function connectSocket() {
     socket = ioClient('http://localhost:3003');
 
-    socket.emit('chat i-join', {nickname})
-
     socket.on('chat history', function (historyMsgs) {
         msgs.push(...historyMsgs)
     });
@@ -20,11 +18,6 @@ function connectSocket() {
         // JIF
         if (nickname === msg.from) msgs[msgs.length - 1].processed = true;
         else msgs.push(msg);
-    });
-
-    socket.on('chat join', function ({who}) {
-        var msg = createEmptyMsg(`${who} Just Joined`)
-        msgs.push(msg);
     });
 
 }
