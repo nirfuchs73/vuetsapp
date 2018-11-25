@@ -4,19 +4,27 @@ import ioClient from 'socket.io-client'
 
 var socket = null;
 const msgs = [];
-var nickName = lorem();
+var nickname = lorem();
 connectSocket();
 
 function connectSocket() {
     socket = ioClient('http://localhost:3003');
+
+    socket.emit('chat i-join', {nickname})
+
     socket.on('chat history', function (historyMsgs) {
         msgs.push(...historyMsgs)
     });
 
     socket.on('chat newMsg', function (msg) {
         // JIF
-        if (nickName === msg.from) msgs[msgs.length - 1].processed = true;
+        if (nickname === msg.from) msgs[msgs.length - 1].processed = true;
         else msgs.push(msg);
+    });
+
+    socket.on('chat join', function ({who}) {
+        var msg = createEmptyMsg(`${who} Just Joined`)
+        msgs.push(msg);
     });
 
 }
@@ -30,14 +38,14 @@ const send = (msg) => {
     socket.emit('chat msg', msg);
 }
 
-function createEmptyMsg() {
-    return { txt: '', processed: false, from: this.nickName };
+function createEmptyMsg(txt = '') {
+    return { txt, processed: false, from: nickname };
 }
 
 export default {
     getMsgs,
     send,
-    nickName,
+    nickname,
     createEmptyMsg
 }
 

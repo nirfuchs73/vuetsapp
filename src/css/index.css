@@ -389,7 +389,7 @@ body {
 
 /* Small Screens */
 
-@media (max-width: 768px) {
+/* @media (max-width: 1768px) { */
   .marvel-device.nexus5 {
     border-radius: 0;
     flex: none;
@@ -426,4 +426,4 @@ body {
   .conversation .conversation-container {
     height: calc(100vh - 120px);
   }
-}
+/* } */
