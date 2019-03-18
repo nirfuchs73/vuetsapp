@@ -33,7 +33,8 @@
                     <img src="https://avatars2.githubusercontent.com/u/398893?s=128" alt="Avatar">
                   </div>
                   <div class="name">
-                    <span>CA Rules!</span>
+                    <span>{{nickName}}</span>
+                   
                     <span class="status">online</span>
                   </div>
                   <div class="actions more">

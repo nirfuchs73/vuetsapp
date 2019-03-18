@@ -4,7 +4,7 @@ import ioClient from 'socket.io-client'
 
 var socket = null;
 const msgs = [];
-var nickname = lorem();
+var nickName = lorem();
 connectSocket();
 
 function connectSocket() {
@@ -16,7 +16,7 @@ function connectSocket() {
 
     socket.on('chat newMsg', function (msg) {
         // JIF
-        if (nickname === msg.from) msgs[msgs.length - 1].processed = true;
+        if (nickName === msg.from) msgs[msgs.length - 1].processed = true;
         else msgs.push(msg);
     });
 
@@ -28,17 +28,17 @@ const getMsgs = () => {
 
 const send = (msg) => {
     msgs.push(msg);
-    socket.emit('chat msg', msg);
+    socket.emit('chat msgToSend', msg);
 }
 
 function createEmptyMsg(txt = '') {
-    return { txt, processed: false, from: nickname };
+    return { txt, processed: false, from: nickName };
 }
 
 export default {
     getMsgs,
     send,
-    nickname,
+    nickName,
     createEmptyMsg
 }
 
