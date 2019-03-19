@@ -9,6 +9,7 @@ connectSocket();
 
 function connectSocket() {
     socket = ioClient('http://localhost:3003');
+    socket.emit('chat joined', nickName);
 
     socket.on('chat history', function (historyMsgs) {
         msgs.push(...historyMsgs)
@@ -20,6 +21,17 @@ function connectSocket() {
         else msgs.push(msg);
     });
 
+    socket.on('chat newUser', nickName => {
+        console.log('New User JOINED', nickName);
+        var msg = createEmptyMsg(`${nickName} is connected`);
+        msgs.push(msg);
+    });
+
+    socket.on('chat user disconnected', nickName => {
+        console.log('User disconnected', nickName);
+        var msg = createEmptyMsg(`${nickName} is disconnected`);
+        msgs.push(msg);
+    });
 }
 
 const getMsgs = () => {
@@ -35,11 +47,22 @@ function createEmptyMsg(txt = '') {
     return { txt, processed: false, from: nickName };
 }
 
+function on(eventName, cb) {
+    socket.on(eventName, cb)
+}
+
+function emit(eventName, data) {
+    console.log(data)
+    socket.emit(eventName, data)
+}
+
 export default {
     getMsgs,
     send,
     nickName,
-    createEmptyMsg
+    createEmptyMsg,
+    on,
+    emit
 }
 
 
